@@ -1,0 +1,102 @@
+/* OESOPHAGEAL CANCER EVALUATION DECISION SUPPORT PROTOTYPE */
+/* Dalton Coker - Imperial College London 2016 / 2017 */
+/* ================================================ */
+/* Helps clinician in determining the testsfor reaching a diagnosis of cancer of the upper gastrointestinal tract & oesophagus */
+/* upon seeing a patient present with the relevant symptoms */
+
+/* INFERENCE ENGINE */
+
+/* Main program rule */
+
+go:- put(12), write('** Oesophageal Cancer Evaluation based on NICE Guidelines **'), nl, nl, 
+ask_questions(0,Total),
+decide(Total).
+
+/* Rule to ask the questions */
+
+ask_questions(14,0).
+/* This is subject to change depending on the number of questions asked */
+
+ask_questions(Q,Total):-
+NextQ is Q + 1, 
+write_question(NextQ),
+write('Answer here: '),
+read(Answer),nl,
+data(NextQ,Answer,Points),
+ask_questions(NextQ,SmallTotal),
+Total is SmallTotal + Points.
+
+ask_questions(Q,Total):-write('Please try again'),nl,
+ask_questions(Q,Total).
+
+/* INTERFACE */
+
+/* Rule to write out a question */
+
+write_question(Q):-text(Q,Text),write(Text),nl,fail.
+write_question(_):-nl.
+
+/* KNOWLEDGE BASE */
+
+/* Criteria or Facts by which to make test decision */
+/* Changeable based on clinician review */
+
+decide(Total):- Total > 50,
+write('Urgent Direct Access Gastrointestinal Endoscopy - To be done within 2 weeks.'),nl.
+decide(Total):- Total < 25.
+write('No tests required.'),nl.
+decide(_):-write('Non-urgent Direct Access Upper Gastrointestinal Endoscopy.'),nl.
+
+/* Text for questions */
+
+text(1,'1. How old are you?').
+
+text(2,'2. Have you had great difficulty swallowing your food recently?').
+text(2,'   (Dysphagia - Answer Yes y, or No n.)').
+
+text(3,'3. Symptom intensity & duration question?').
+text(3,'   (Relevant prompt here.)').
+
+text(4,'4. Symptom intensity & duration question?').
+text(4,'   (Relevant prompt here.)').
+
+text(5,'5. Symptom intensity & duration question?').
+text(5,'   (Relevant prompt here.)').
+
+text(6,'6. Symptom intensity & duration question?').
+text(6,'   (Relevant prompt here.)').
+
+text(7,'7. Symptom intensity & duration question?').
+text(7,'   (Relevant prompt here.)').
+
+text(8,'8. Symptom intensity & duration question?').
+text(8,'   (Relevant prompt here.)').
+
+text(9,'9. Symptom intensity & duration question?').
+text(9,'   (Relevant prompt here.)').
+
+text(10,'10. Symptom intensity & duration question?').
+text(10,'   (Relevant prompt here.)').
+
+text(11,'11. Symptom intensity & duration question?').
+text(11,'   (Relevant prompt here.)').
+
+text(12,'12. Symptom intensity & duration question?').
+text(12,'   (Relevant prompt here.)').
+
+text(13,'13. Symptom intensity & duration question?').
+text(13,'   (Relevant prompt here.)').
+
+text(14,'14. Symptom intensity & duration question?').
+text(14,'   (Relevant prompt here.)').
+
+/* Assessment Instances of or Data Facts for, the Answers Given */
+
+data(1,x,15):-x < 55.
+data(1,x,60):-x > 55.
+
+data(2,y,60).
+data(2,n,0).
+
+  
+
